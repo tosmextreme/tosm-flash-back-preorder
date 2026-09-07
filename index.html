@@ -709,7 +709,7 @@ h1{
     return TIERS[Number(v)] || { seed: '-', name: '-' };
   }
 
-  /* ปิดชื่อตรงกลาง เช่น papaweek → pap***eek */
+  /* ปิดชื่อตรงกลาง เช่น PlayerName → Pla***ame */
   function maskName(s) {
     s = String(s || '');
     if (s.length <= 4) return s.charAt(0) + '***';
