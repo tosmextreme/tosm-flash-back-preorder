@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flash Back Pre-Order — TOSM Extreme</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&family=Trirong:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   Flash Back Pre-Order — หน้าเว็บผู้เล่น
+   ------------------------------------------------------------
+   รูปอยู่ในโฟลเดอร์ assets/ ข้าง ๆ ไฟล์นี้
+     bg.webp   ฉากเมือง — ใช้ 2 ที่: พื้นหลังทั้งหน้า (มืดมาก+เบลอ)
+               และในกรอบฝั่งซ้าย (สว่างกว่า คมกว่า)
+     logo.webp โลโก้ TOSM Extreme
+   (ในโฟลเดอร์มีไฟล์ .png/.jpg ต้นฉบับสำรองไว้ด้วย)
+   ============================================================ */
+:root{
+  /* สีประจำแบรนด์ TOSM (ยกมาจากหน้าประกาศรางวัล) */
+  --gold:        #C9AF79;
+  --gold-soft:   #E7D6A8;
+  --gold-dark:   #A08C55;
+  --viridian:    #40826D;
+  --teal-deep:   #014D4B;
+
+  /* โทน Flash Back */
+  --ink-0:  #05090C;
+  --ink-1:  #0A1014;
+  --ink-2:  #10181E;
+  --line:   rgba(201,175,121,.20);
+  --line-2: rgba(201,175,121,.34);
+  --txt:    #EDE7DA;
+  --txt-dim:rgba(237,231,218,.62);
+  --danger: #E2607A;
+  --ok:     #5FC8A0;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:"Sarabun",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color:var(--txt);
+  background:#04080A;
+  min-height:100dvh;
+  display:grid;
+  place-items:center;
+  padding:28px 20px 44px;
+}
+
+/* ---------- พื้นหลังทั้งหน้า = ฉากเมือง (มืดมาก + เบลอ) ---------- */
+body::before{
+  content:"";
+  position:fixed; inset:0; z-index:-2;
+  background:url("assets/bg.webp") center 40% / cover no-repeat;
+  filter:brightness(.20) saturate(.48) contrast(1.05) blur(7px);
+  transform:scale(1.09);
+}
+body::after{
+  content:"";
+  position:fixed; inset:0; z-index:-1;
+  background:
+    radial-gradient(1200px 700px at 14% -6%, rgba(64,130,109,.20), transparent 62%),
+    radial-gradient(1000px 620px at 88% 110%, rgba(201,175,121,.15), transparent 62%),
+    radial-gradient(120% 100% at 50% 50%, transparent 32%, rgba(2,5,7,.72) 100%);
+}
+
+/* ---------- การ์ดหลัก ---------- */
+.card{
+  width:min(1240px,100%);
+  display:grid;
+  grid-template-columns:minmax(0,.92fr) minmax(0,1fr);
+  border-radius:26px;
+  overflow:hidden;
+  position:relative;
+  border:1px solid var(--line-2);
+  box-shadow:
+    0 60px 130px -34px rgba(0,0,0,.95),
+    0 0 0 1px rgba(255,255,255,.04) inset,
+    0 0 90px -30px rgba(201,175,121,.22);
+  background:var(--ink-1);
+  /* ล็อกความสูงให้เท่ากันทุกหน้า จะได้ไม่กระตุกตอนเปลี่ยนหน้า */
+  height:clamp(640px, calc(100dvh - 96px), 792px);
+}
+
+/* ---------- ฝั่งซ้าย: ฉาก + ตัวละคร ---------- */
+.art{
+  position:relative;
+  background:#060B12;
+  overflow:hidden;
+  isolation:isolate;
+}
+
+/* ชั้นที่ 1 — ฉากเมือง (สว่างกว่าและคมกว่าพื้นหลังทั้งหน้า) */
+.art-bg{
+  position:absolute; inset:-4%;
+  background:url("assets/bg.webp") center 36% / cover no-repeat;
+  filter:brightness(.46) saturate(.72) contrast(1.05) blur(1px);
+  transform:scale(1.05);
+  z-index:0;
+}
+
+/* ชั้นที่ 2 — ไล่สีทับ ให้กลืนกับแผงฝั่งขวา */
+.art-scrim{
+  position:absolute; inset:0; z-index:1;
+  background:
+    radial-gradient(78% 58% at 34% 40%, rgba(201,175,121,.22), transparent 68%),
+    radial-gradient(90% 70% at 20% 6%, rgba(64,130,109,.26), transparent 64%),
+    linear-gradient(90deg, transparent 42%, rgba(5,9,12,.48) 80%, rgba(5,9,12,.86) 100%),
+    linear-gradient(0deg, rgba(4,8,10,.90) 1%, rgba(4,8,10,.24) 46%, rgba(4,8,10,.48) 100%);
+}
+
+/* ชั้นที่ 3 — โลโก้ + ข้อความ จัดกลางแนวตั้ง */
+.art-head{
+  position:absolute; inset:0; z-index:3;
+  display:flex; flex-direction:column; justify-content:center;
+  padding:46px 44px;
+}
+.art-logo{
+  display:block;
+  width:clamp(150px,17vw,196px);
+  height:auto;
+  margin-bottom:26px;
+  filter:drop-shadow(0 6px 22px rgba(0,0,0,.8));
+}
+.art-kicker{
+  font-family:"Sarabun",system-ui,sans-serif;
+  font-weight:700;
+  letter-spacing:.02em;
+  font-size:clamp(30px,3.6vw,43px);
+  line-height:1.1;
+  margin:0 0 14px;
+  color:#fff;
+  text-shadow:0 4px 30px rgba(0,0,0,.95);
+}
+.art-kicker span{
+  display:block;
+  color:var(--gold-soft);
+  font-weight:600;
+  font-size:.5em;
+  letter-spacing:.26em;
+  margin-top:6px;
+}
+.art-badge{
+  align-self:flex-start;
+  display:inline-flex; align-items:center; gap:8px;
+  padding:8px 16px;
+  border-radius:999px;
+  background:rgba(4,8,10,.58);
+  border:1px solid var(--line-2);
+  backdrop-filter:blur(10px);
+  font-size:12px; font-weight:600;
+  letter-spacing:.14em;
+  color:var(--gold-soft);
+}
+.art-badge i{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--gold);
+  box-shadow:0 0 10px var(--gold);
+}
+
+/* ---------- ฝั่งขวา: แผงกระจก ---------- */
+.panel{
+  position:relative;
+  background:rgba(9,14,18,.80);
+  backdrop-filter:blur(26px) saturate(120%);
+  -webkit-backdrop-filter:blur(26px) saturate(120%);
+  border-left:1px solid var(--line);
+  padding:52px 54px 46px;
+  display:flex;
+  flex-direction:column;
+  /* ถ้าเนื้อหาหน้าไหนยาวเกิน ให้เลื่อนในแผงนี้ กรอบไม่ยืด */
+  overflow-y:auto;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(201,175,121,.35) transparent;
+}
+.panel::-webkit-scrollbar{width:8px}
+.panel::-webkit-scrollbar-track{background:transparent}
+.panel::-webkit-scrollbar-thumb{
+  background:rgba(201,175,121,.28);
+  border-radius:99px;
+  border:2px solid transparent;
+  background-clip:content-box;
+}
+.panel::-webkit-scrollbar-thumb:hover{background:rgba(201,175,121,.5);background-clip:content-box}
+.panel::before{                     /* เส้นทองบาง ๆ ด้านบน */
+  content:"";
+  position:absolute; top:0; left:0; right:0; height:1px;
+  background:linear-gradient(90deg,transparent,var(--line-2),transparent);
+}
+.close{
+  position:absolute; top:20px; right:20px;
+  width:34px;height:34px;
+  display:grid;place-items:center;
+  border:0;border-radius:10px;
+  background:transparent;color:var(--txt-dim);
+  font-size:19px;cursor:pointer;
+  transition:.18s;
+}
+.close:hover{background:rgba(255,255,255,.07);color:var(--txt)}
+
+/* หัวข้อ + ขั้นตอน */
+.steps{
+  display:flex;align-items:center;gap:9px;
+  font-size:12px;letter-spacing:.13em;font-weight:600;
+  color:rgba(237,231,218,.34);
+  margin-bottom:26px;
+}
+.steps b{color:var(--gold-soft);font-weight:700}
+.steps s{width:14px;height:1px;background:var(--line-2);display:inline-block}
+
+h1{
+  font-family:"Trirong",serif;
+  font-size:25px;font-weight:600;
+  margin:0 0 8px;
+  color:var(--gold-soft);
+  letter-spacing:.01em;
+}
+.lead{
+  margin:0 0 26px;
+  font-size:14px;line-height:1.72;
+  color:var(--txt-dim);
+}
+
+/* ฟอร์ม */
+.field{margin-bottom:17px}
+.field label{
+  display:block;
+  font-size:12.5px;font-weight:600;
+  letter-spacing:.04em;
+  color:var(--gold-soft);
+  margin-bottom:7px;
+}
+.field label em{
+  font-style:normal;font-weight:400;
+  color:var(--txt-dim);
+  letter-spacing:0;
+}
+.field input{
+  width:100%;
+  padding:12px 14px;
+  font-family:inherit;font-size:14.5px;
+  color:var(--txt);
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:10px;
+  outline:none;
+  transition:.18s;
+}
+.field input::placeholder{color:rgba(237,231,218,.28)}
+.field input:focus{
+  border-color:var(--gold);
+  background:rgba(201,175,121,.07);
+  box-shadow:0 0 0 3px rgba(201,175,121,.14);
+}
+.field input:disabled{
+  color:var(--gold-soft);
+  background:rgba(201,175,121,.08);
+  border-color:var(--line);
+  cursor:not-allowed;
+  font-weight:600;
+  letter-spacing:.04em;
+}
+.hint{
+  margin:7px 0 0;
+  font-size:11.5px;line-height:1.6;
+  color:rgba(237,231,218,.42);
+}
+.hint a{color:var(--gold);text-decoration:none;border-bottom:1px dotted var(--gold-dark)}
+.hint a:hover{color:var(--gold-soft)}
+
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+/* ช่องเลือก Server */
+.field select{
+  width:100%;
+  padding:12px 38px 12px 14px;
+  font-family:inherit;font-size:14.5px;
+  color:var(--txt);
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:10px;
+  outline:none;
+  transition:.18s;
+  appearance:none;-webkit-appearance:none;
+  background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='%23C9AF79' d='M1 1.5 6 6.5l5-5'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 14px center;
+  background-size:11px;
+  cursor:pointer;
+}
+.field select:focus{
+  border-color:var(--gold);
+  box-shadow:0 0 0 3px rgba(201,175,121,.14);
+}
+.field select option{background:#0E161B;color:var(--txt)}
+
+/* checkbox ยินยอม */
+.consent{
+  display:flex;gap:11px;align-items:flex-start;
+  margin:20px 0 4px;
+  font-size:12.5px;line-height:1.65;
+  color:var(--txt-dim);
+}
+.consent input{
+  appearance:none;-webkit-appearance:none;
+  flex:0 0 auto;
+  width:17px;height:17px;margin-top:1px;
+  border:1px solid var(--line-2);
+  border-radius:5px;
+  background:rgba(255,255,255,.05);
+  cursor:pointer;position:relative;transition:.16s;
+}
+.consent input:checked{background:var(--gold);border-color:var(--gold)}
+.consent input:checked::after{
+  content:"";position:absolute;left:5px;top:1px;
+  width:5px;height:10px;
+  border:solid #0A1014;border-width:0 2px 2px 0;
+  transform:rotate(43deg);
+}
+
+/* ปุ่ม */
+.btn{
+  width:100%;
+  margin-top:22px;
+  padding:14px 18px;
+  font-family:inherit;
+  font-size:14px;font-weight:700;
+  letter-spacing:.1em;
+  color:#0A1014;
+  background:linear-gradient(135deg,var(--gold-soft),var(--gold) 52%,var(--gold-dark));
+  border:0;border-radius:11px;
+  cursor:pointer;
+  transition:.2s;
+  box-shadow:0 12px 30px -12px rgba(201,175,121,.55);
+}
+.btn:hover{filter:brightness(1.09);transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+.btn.ghost{
+  background:transparent;
+  color:var(--gold-soft);
+  border:1px solid var(--line-2);
+  box-shadow:none;
+  margin-top:11px;
+}
+.btn.ghost:hover{background:rgba(201,175,121,.09)}
+.btn[disabled]{
+  opacity:.55;
+  cursor:progress;
+  filter:none;
+  transform:none;
+}
+
+/* ข้อความแจ้งเตือนในฟอร์ม */
+.msg{
+  margin:16px 0 0;
+  padding:12px 15px;
+  border-radius:10px;
+  font-size:13px;line-height:1.65;
+  background:rgba(226,96,122,.09);
+  border:1px solid rgba(226,96,122,.30);
+  color:#F2C3CD;
+}
+.msg[hidden]{display:none}
+.field.bad input{
+  border-color:rgba(226,96,122,.6);
+  background:rgba(226,96,122,.06);
+}
+
+.foot{
+  margin-top:auto;padding-top:24px;
+  font-size:11.5px;color:rgba(237,231,218,.34);
+  text-align:center;line-height:1.7;
+}
+
+/* ---------- สถานะ: ไม่ผ่าน / สำเร็จ ---------- */
+.state{
+  display:flex;flex-direction:column;
+  align-items:center;text-align:center;
+  padding-top:16px;
+}
+.state-icon{
+  width:74px;height:74px;border-radius:50%;
+  display:grid;place-items:center;
+  font-size:32px;
+  margin-bottom:22px;
+}
+.state-icon.bad{
+  color:var(--danger);
+  background:rgba(226,96,122,.10);
+  border:1px solid rgba(226,96,122,.32);
+  box-shadow:0 0 34px -8px rgba(226,96,122,.45);
+}
+.state-icon.good{
+  color:var(--ok);
+  background:rgba(95,200,160,.10);
+  border:1px solid rgba(95,200,160,.34);
+  box-shadow:0 0 34px -8px rgba(95,200,160,.5);
+}
+.state h1{text-align:center}
+.state .lead{text-align:center;max-width:36ch}
+
+.callout{
+  width:100%;
+  margin:4px 0 6px;
+  padding:15px 17px;
+  border-radius:12px;
+  font-size:13px;line-height:1.72;
+  text-align:left;
+  background:rgba(226,96,122,.07);
+  border:1px solid rgba(226,96,122,.24);
+  color:rgba(237,231,218,.82);
+}
+.callout.warn{
+  background:rgba(201,175,121,.07);
+  border-color:var(--line-2);
+}
+.callout b{color:var(--gold-soft)}
+
+/* กล่องเตือนสีแดง — เน้นให้เห็นชัดที่สุดในหน้า */
+.alert-red{
+  width:100%;
+  margin:14px 0 4px;
+  padding:15px 17px;
+  border-radius:12px;
+  text-align:center;
+  font-size:13.5px;font-weight:600;line-height:1.75;
+  color:#FFD9E0;
+  background:linear-gradient(180deg, rgba(214,48,80,.22), rgba(214,48,80,.13));
+  border:1.5px solid rgba(255,90,120,.62);
+  box-shadow:0 0 26px -8px rgba(226,60,95,.55);
+}
+
+.refbox{
+  width:100%;
+  margin:2px 0 20px;
+  padding:18px;
+  border-radius:13px;
+  background:rgba(201,175,121,.07);
+  border:1px dashed var(--line-2);
+}
+.refbox small{
+  display:block;
+  font-size:11.5px;letter-spacing:.14em;
+  color:var(--txt-dim);
+  margin-bottom:7px;
+}
+.refbox strong{
+  font-family:"Sarabun",system-ui,sans-serif;
+  font-weight:700;
+  font-size:28px;letter-spacing:.14em;
+  color:var(--gold-soft);
+}
+
+.summary{
+  width:100%;margin-bottom:18px;
+  border:1px solid var(--line);
+  border-radius:12px;overflow:hidden;
+}
+.summary div{
+  display:flex;justify-content:space-between;gap:16px;
+  padding:11px 15px;
+  font-size:13px;
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+.summary div:last-child{border-bottom:0}
+.summary span{color:var(--txt-dim)}
+.summary b{color:var(--txt);font-weight:600;text-align:right;word-break:break-all}
+
+/* ---------- สลับหน้า ---------- */
+/* จำกัดความกว้างเนื้อหา ไม่ให้บรรทัดยาวเกินอ่านสบายเมื่อกรอบใหญ่ขึ้น */
+.screen{display:none;width:100%;max-width:520px;margin-inline:auto}
+.screen.on{display:flex;flex-direction:column;flex:1;animation:fade .32s ease}
+@keyframes fade{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+
+/* ---------- มือถือ ---------- */
+@media (max-width:820px){
+  body{padding:0}
+  .card{
+    grid-template-columns:1fr;
+    height:auto;
+    min-height:100dvh;
+    border-radius:0;
+    border:0;
+  }
+  .panel{overflow-y:visible}
+  .art{min-height:280px}
+  .art-head{padding:28px 24px}
+  .art-logo{width:118px;margin-bottom:16px}
+  .art-kicker{font-size:29px;margin-bottom:11px}
+  .art-scrim{
+    background:
+      radial-gradient(90% 70% at 30% 34%, rgba(201,175,121,.20), transparent 68%),
+      linear-gradient(0deg, rgba(4,8,10,.94) 1%, rgba(4,8,10,.30) 52%, rgba(4,8,10,.55) 100%);
+  }
+  .panel{padding:34px 24px 34px;border-left:0}
+  .row{grid-template-columns:1fr}
+}
+
+</style>
+</head>
+<body>
+
+<main class="card">
+
+  <!-- ================= ฝั่งซ้าย: ฉาก + ตัวละคร ================= -->
+  <section class="art" aria-hidden="true">
+    <div class="art-bg"></div>
+    <div class="art-scrim"></div>
+    <div class="art-head">
+      <img class="art-logo" src="assets/logo.webp" alt="Tree of Savior M Extreme">
+      <h2 class="art-kicker">FLASH BACK<span>PRE-ORDER</span></h2>
+      <div class="art-badge"><i></i>11 – 17 กันยายน 2026</div>
+    </div>
+  </section>
+
+  <!-- ================= ฝั่งขวา: แผงกระจก ================= -->
+  <section class="panel">
+    <button class="close" type="button" aria-label="ปิด">✕</button>
+
+    <!-- ---------- 1. ตรวจสอบสิทธิ์ ---------- -->
+    <div class="screen on" id="s-check">
+      <div class="steps"><b>ตรวจสอบสิทธิ์</b><s></s>ลงทะเบียน<s></s>ยืนยัน</div>
+
+      <h1>ตรวจสอบสิทธิ์ Pre-Order</h1>
+      <p class="lead">
+        กรอก Username (EXEID) และ AID ของท่านให้ตรงกับที่ใช้ในเกม
+        เพื่อตรวจสอบว่าท่านได้รับสิทธิ์แลกซื้อ Costume ในแคมเปญนี้หรือไม่
+      </p>
+
+      <div class="field" id="fw-user">
+        <label for="f-user">Username <em>(EXEID)</em></label>
+        <input id="f-user" type="text" autocomplete="off" spellcheck="false" placeholder="กรอก Username ของท่าน">
+      </div>
+
+      <div class="field" id="fw-aid">
+        <label for="f-aid">AID</label>
+        <input id="f-aid" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" placeholder="กรอก AID ของท่าน">
+        <p class="hint">ทั้งสองช่องต้องตรงกับข้อมูลในระบบ จึงจะตรวจสอบสิทธิ์ได้</p>
+      </div>
+
+      <p class="msg" id="check-msg" hidden></p>
+
+      <button class="btn" type="button" id="btn-check">ตรวจสอบสิทธิ์</button>
+
+      <p class="foot">
+        แคมเปญตอบแทน Royalty Program สำหรับผู้ซื้อแพ็ก TP &amp; Gold เดือนสิงหาคม<br>
+        ยอดรวมตั้งแต่ 990 บาทขึ้นไป
+      </p>
+    </div>
+
+    <!-- ---------- 2. ไม่ผ่าน ---------- -->
+    <div class="screen" id="s-fail">
+      <div class="steps"><b>ตรวจสอบสิทธิ์</b><s></s>ลงทะเบียน<s></s>ยืนยัน</div>
+
+      <div class="state">
+        <div class="state-icon bad">✕</div>
+        <h1 id="fail-title">ไม่พบสิทธิ์ Pre-Order</h1>
+        <p class="lead" id="fail-lead">Username (EXEID) / AID ไม่ตรงตามที่ระบบตรวจเจอ</p>
+
+        <div class="callout" id="fail-tips">
+          กรุณาตรวจสอบอีกครั้งว่า<br>
+          • สะกด Username และ AID ถูกต้องครบถ้วน<br>
+          • ไม่มีช่องว่างหรืออักขระเกินติดมาตอนคัดลอก<br>
+          • เป็นไอดีเดียวกับที่ซื้อแพ็กในเดือนสิงหาคม
+        </div>
+
+        <button class="btn" type="button" data-go="check">ลองใหม่อีกครั้ง</button>
+      </div>
+
+      <p class="foot">หากตรวจสอบแล้วยังไม่พบสิทธิ์ กรุณาติดต่อทีมงานพร้อมแจ้ง AID ของท่าน</p>
+    </div>
+
+    <!-- ---------- 3. ลงทะเบียนรับสิทธิ์ ---------- -->
+    <div class="screen" id="s-form">
+      <div class="steps">ตรวจสอบสิทธิ์<s></s><b>ลงทะเบียน</b><s></s>ยืนยัน</div>
+
+      <h1>แจ้งข้อมูลเพื่อรับสิทธิ์</h1>
+      <p class="lead">
+        ท่านได้รับสิทธิ์ Pre-Order เรียบร้อยแล้ว
+        กรุณาแจ้งข้อมูลเพื่อยืนยันความเป็นเจ้าของไอดี
+      </p>
+
+      <div class="field">
+        <label for="g-aid">AID</label>
+        <input id="g-aid" type="text" value="" disabled>
+      </div>
+
+      <div class="row">
+        <div class="field" id="fw-server">
+          <label for="g-server">Server ที่เล่น</label>
+          <select id="g-server">
+            <option value="">เลือก Server</option>
+            <option>Austeja</option>
+            <option>Vakarine</option>
+            <option>Giltine</option>
+            <option>Laima</option>
+            <option>Jurate</option>
+          </select>
+        </div>
+        <div class="field" id="fw-family">
+          <label for="g-family">Family Name</label>
+          <input id="g-family" type="text" placeholder="ชื่อแฟมิลี่ในเกม">
+        </div>
+      </div>
+
+      <div class="field" id="fw-email">
+        <label for="g-email">Email <em>ที่ใช้สมัครไอดี</em></label>
+        <input id="g-email" type="email" inputmode="email" placeholder="name@example.com">
+      </div>
+
+      <div class="field" id="fw-phone">
+        <label for="g-phone">เบอร์ติดต่อ <em>ที่ใช้สมัครไอดี</em></label>
+        <input id="g-phone" type="tel" inputmode="tel" placeholder="0XXXXXXXXX">
+        <p class="hint">
+          ดู Email และเบอร์โทรที่ใช้สมัครไอดีได้ที่
+          <a href="https://portal.exe.in.th/member/settings/edit" target="_blank" rel="noopener noreferrer">หน้าตั้งค่าสมาชิก</a>
+        </p>
+      </div>
+
+      <label class="consent">
+        <input type="checkbox" id="g-consent">
+        <span>ข้าพเจ้ายินยอมให้ทีมงานเก็บและใช้ข้อมูลข้างต้นเพื่อยืนยันตัวตนและจัดส่งของรางวัลในแคมเปญนี้เท่านั้น</span>
+      </label>
+
+      <p class="msg" id="form-msg" hidden></p>
+
+      <button class="btn" type="button" id="btn-claim">ยืนยันรับสิทธิ์ Pre-Order</button>
+
+      <p class="foot">ข้อมูลนี้ใช้เพื่อยืนยันตัวตน ในการ Pre-Order ของเกม TOSM Extreme เท่านั้น</p>
+    </div>
+
+    <!-- ---------- 4. สำเร็จ ---------- -->
+    <div class="screen" id="s-done">
+      <div class="steps">ตรวจสอบสิทธิ์<s></s>ลงทะเบียน<s></s><b>ยืนยัน</b></div>
+
+      <div class="state">
+        <div class="state-icon good">✓</div>
+        <h1 id="done-title">ลงทะเบียนสำเร็จ</h1>
+        <p class="lead" id="done-lead">ระบบบันทึกการรับสิทธิ์ Pre-Order ของท่านเรียบร้อยแล้ว</p>
+
+        <div class="refbox">
+          <small>เลขอ้างอิง</small>
+          <strong id="done-ref">FBPO-0042</strong>
+        </div>
+
+        <div class="summary">
+          <div><span>Username (EXEID)</span><b id="done-user">-</b></div>
+          <div><span>AID</span><b id="done-aid">-</b></div>
+          <div><span>Server</span><b id="done-server">-</b></div>
+          <div><span>แพ็กเกจ</span><b id="done-tier">-</b></div>
+          <div><span>Seed Point ทั้งหมด</span><b id="done-seed">-</b></div>
+          <div><span>เวลาที่ลงทะเบียน</span><b id="done-time">-</b></div>
+        </div>
+
+        <div class="callout warn">
+          <b>ขั้นตอนต่อไป — สำคัญมาก</b><br>
+          กรุณาเติมเงินจำนวน <b id="done-need">-</b> ไว้ในไอดีของท่าน
+          ระบบจะหักอัตโนมัติในวันที่ <b>18 กันยายน เวลา 12.00 น.</b>
+        </div>
+
+        <div class="alert-red">
+          หากยอด Seed Point ไม่เพียงพอ จะถือว่าการ Pre-Order ถูกยกเลิกทันที<br>
+          ในวันที่ 18 กันยายน 12.00 น. เป็นต้นไป
+        </div>
+
+        <button class="btn ghost" type="button" id="btn-slip">⬇ ดาวน์โหลดหลักฐานการลงทะเบียน</button>
+
+      </div>
+
+      <p class="foot">รับ Costume ได้ที่หัวข้อ “รับรางวัล” ในหน้าระบบสมาชิกบนเว็บไซต์</p>
+    </div>
+
+  </section>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ============================================================
+     ตั้งค่าการเชื่อมต่อ Supabase
+     โปรเจกต์ tosm-reward · schema preorder
+     คีย์นี้เป็น publishable key เปิดเผยได้ ไม่มีสิทธิ์อ่านตารางใด ๆ
+     เรียกได้แค่ 2 ฟังก์ชันที่เปิดไว้เท่านั้น
+     ============================================================ */
+  var API = 'https://tkwxdohgqinldpvdkqnt.supabase.co/rest/v1/rpc/';
+  var KEY = 'sb_publishable_WJ2m36sC0wzUxLHAUiE4kw_bhybHasU';
+
+  /* ============================================================
+     แพ็กเกจ 3 Tier — ระบบดึงจากชีต ผู้เล่นเลือกเองไม่ได้
+     ⚠️ ชื่อชุด Costume ด้านล่างยังเป็นตัวอย่าง รอทีมยืนยัน
+        แก้ค่า name ได้เลย ไม่ต้องแตะส่วนอื่น
+     ============================================================ */
+  var TIERS = {
+    10000: { seed: '10,000 Seed Point', name: 'Fluffy Sky Puppy / Golden Fox — ชุดเต็ม' },
+    7000:  { seed: '7,000 Seed Point',  name: 'Fluffy Sky Puppy / Golden Fox — ชุดกลาง' },
+    5000:  { seed: '5,000 Seed Point',  name: 'Fluffy Sky Puppy / Golden Fox — ชุดเริ่มต้น' }
+  };
+
+  var $ = function (id) { return document.getElementById(id); };
+  var screens = ['check', 'fail', 'form', 'done'];
+  var session = { username: '', aid: '', tier: null };
+
+  function tierInfo(v) {
+    return TIERS[Number(v)] || { seed: '-', name: '-' };
+  }
+
+  /* ปิดชื่อตรงกลาง เช่น papaweek → pap***eek */
+  function maskName(s) {
+    s = String(s || '');
+    if (s.length <= 4) return s.charAt(0) + '***';
+    var keep = s.length <= 8 ? 2 : 3;
+    return s.slice(0, keep) + '***' + s.slice(-keep);
+  }
+
+  function go(name) {
+    screens.forEach(function (s) {
+      $('s-' + s).classList.toggle('on', s === name);
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function showMsg(el, text) {
+    if (!text) { el.hidden = true; el.textContent = ''; return; }
+    el.hidden = false;
+    el.textContent = text;
+  }
+
+  function markBad(ids) {
+    ['fw-user','fw-aid','fw-server','fw-family','fw-email','fw-phone'].forEach(function (id) {
+      var el = $(id);
+      if (el) el.classList.remove('bad');
+    });
+    (ids || []).forEach(function (id) {
+      var el = $(id);
+      if (el) el.classList.add('bad');
+    });
+  }
+
+  function busy(btn, on, label) {
+    btn.disabled = on;
+    btn.textContent = on ? 'กำลังตรวจสอบ…' : label;
+  }
+
+  /* เรียกฟังก์ชันบนฐานข้อมูล */
+  function rpc(fn, body) {
+    return fetch(API + fn, {
+      method: 'POST',
+      headers: {
+        'apikey': KEY,
+        'Authorization': 'Bearer ' + KEY,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    }).then(function (r) {
+      if (!r.ok) throw new Error('http ' + r.status);
+      return r.json();
+    });
+  }
+
+  /* ข้อความตามสถานะที่ฐานข้อมูลส่งกลับมา */
+  var FAIL = {
+    no_match: {
+      title: 'ไม่พบสิทธิ์ Pre-Order',
+      lead:  'Username (EXEID) / AID ไม่ตรงตามที่ระบบตรวจเจอ',
+      tips:  'กรุณาตรวจสอบอีกครั้งว่า<br>' +
+             '• สะกด Username และ AID ถูกต้องครบถ้วน<br>' +
+             '• ไม่มีช่องว่างหรืออักขระเกินติดมาตอนคัดลอก<br>' +
+             '• เป็นไอดีเดียวกับที่ซื้อแพ็กในเดือนสิงหาคม'
+    },
+    rate_limited: {
+      title: 'ตรวจสอบบ่อยเกินไป',
+      lead:  'ระบบจำกัดจำนวนครั้งในการตรวจสอบ เพื่อความปลอดภัยของข้อมูลผู้เล่น',
+      tips:  'กรุณารอประมาณ 10 นาที แล้วลองใหม่อีกครั้ง'
+    },
+    closed: {
+      title: 'ยังไม่เปิดให้ลงทะเบียน',
+      lead:  'ระบบเปิดรับ Pre-Order ระหว่างวันที่ 11 – 17 กันยายน 2026',
+      tips:  'กรุณากลับมาใหม่ในช่วงเวลาดังกล่าว'
+    },
+    error: {
+      title: 'ระบบขัดข้องชั่วคราว',
+      lead:  'ไม่สามารถเชื่อมต่อกับระบบได้ในขณะนี้',
+      tips:  'กรุณาลองใหม่อีกครั้งในอีกสักครู่ หากยังไม่ได้กรุณาแจ้งทีมงาน'
+    }
+  };
+
+  function showFail(kind) {
+    var f = FAIL[kind] || FAIL.error;
+    $('fail-title').textContent = f.title;
+    $('fail-lead').textContent  = f.lead;
+    $('fail-tips').innerHTML    = f.tips;
+    go('fail');
+  }
+
+  function showDone(d, already) {
+    $('done-title').textContent = already ? 'ท่านลงทะเบียนไว้แล้ว' : 'ลงทะเบียนสำเร็จ';
+    $('done-lead').textContent  = already
+      ? 'ระบบพบว่าไอดีนี้ได้แจ้งรับสิทธิ์ Pre-Order ไปแล้ว ไม่ต้องลงทะเบียนซ้ำ'
+      : 'ระบบบันทึกการรับสิทธิ์ Pre-Order ของท่านเรียบร้อยแล้ว';
+    var t = tierInfo(d.tier || session.tier);
+
+    $('done-ref').textContent    = d.ref_code || '-';
+    $('done-user').textContent   = d.username || session.username || '-';
+    $('done-aid').textContent    = d.aid || session.aid || '-';
+    $('done-server').textContent = d.server || '-';
+    $('done-tier').textContent   = t.name;
+    $('done-seed').textContent   = t.seed;
+    $('done-need').textContent   = t.seed;
+    $('done-time').textContent   = d.created_at || '-';
+    go('done');
+  }
+
+  /* ---------- 1. ตรวจสอบสิทธิ์ ---------- */
+  $('btn-check').addEventListener('click', function () {
+    var btn  = this;
+    var user = $('f-user').value.trim();
+    var aid  = $('f-aid').value.trim();
+
+    markBad([]);
+    showMsg($('check-msg'), '');
+
+    if (!user || !aid) {
+      markBad([!user ? 'fw-user' : null, !aid ? 'fw-aid' : null].filter(Boolean));
+      showMsg($('check-msg'), 'กรุณากรอกทั้ง Username (EXEID) และ AID');
+      return;
+    }
+
+    busy(btn, true);
+    rpc('preorder_check', { p_username: user, p_aid: aid })
+      .then(function (res) {
+        busy(btn, false, 'ตรวจสอบสิทธิ์');
+
+        if (res.status === 'eligible') {
+          session.username = user;
+          session.aid = aid;
+          session.tier = res.tier;
+          $('g-aid').value = aid;          /* ดึง AID จากหน้าแรกมาใส่ให้เลย */
+          markBad([]);
+          showMsg($('form-msg'), '');
+          go('form');
+        } else if (res.status === 'already_claimed') {
+          session.username = user;
+          session.aid = aid;
+          session.tier = res.tier;
+          showDone({ ref_code: res.ref_code, tier: res.tier }, true);
+        } else {
+          showFail(res.status);
+        }
+      })
+      .catch(function () {
+        busy(btn, false, 'ตรวจสอบสิทธิ์');
+        showFail('error');
+      });
+  });
+
+  /* ---------- 2. ส่งข้อมูลรับสิทธิ์ ---------- */
+  var CLAIM_ERR = {
+    missing_server:      { msg: 'กรุณากรอก Server ที่เล่น', field: 'fw-server' },
+    missing_family_name: { msg: 'กรุณากรอก Family Name', field: 'fw-family' },
+    bad_email:           { msg: 'รูปแบบ Email ไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง', field: 'fw-email' },
+    bad_phone:           { msg: 'เบอร์โทรไม่ถูกต้อง กรุณากรอกเฉพาะตัวเลข 9–10 หลัก', field: 'fw-phone' }
+  };
+
+  $('btn-claim').addEventListener('click', function () {
+    var btn = this;
+    markBad([]);
+    showMsg($('form-msg'), '');
+
+    if (!$('g-server').value) {
+      markBad(['fw-server']);
+      showMsg($('form-msg'), 'กรุณาเลือก Server ที่เล่น');
+      return;
+    }
+
+    if (!$('g-consent').checked) {
+      showMsg($('form-msg'), 'กรุณายอมรับเงื่อนไขการเก็บข้อมูลก่อนยืนยัน');
+      return;
+    }
+
+    busy(btn, true);
+    rpc('preorder_claim', {
+      p_username:    session.username,
+      p_aid:         session.aid,
+      p_server:      $('g-server').value.trim(),
+      p_family_name: $('g-family').value.trim(),
+      p_email:       $('g-email').value.trim(),
+      p_phone:       $('g-phone').value.trim()
+    })
+      .then(function (res) {
+        busy(btn, false, 'ยืนยันรับสิทธิ์ Pre-Order');
+
+        if (res.status === 'claimed') {
+          showDone(res, false);
+        } else if (res.status === 'already_claimed') {
+          showDone({ ref_code: res.ref_code }, true);
+        } else if (CLAIM_ERR[res.status]) {
+          markBad(CLAIM_ERR[res.status].field ? [CLAIM_ERR[res.status].field] : []);
+          showMsg($('form-msg'), CLAIM_ERR[res.status].msg);
+        } else {
+          showFail(res.status);
+        }
+      })
+      .catch(function () {
+        busy(btn, false, 'ยืนยันรับสิทธิ์ Pre-Order');
+        showMsg($('form-msg'), 'ส่งข้อมูลไม่สำเร็จ กรุณาลองใหม่อีกครั้ง');
+      });
+  });
+
+  /* ---------- 3. ดาวน์โหลดหลักฐานการลงทะเบียน ---------- */
+  $('btn-slip').addEventListener('click', function () {
+    var W = 900, H = 1160, S = 2;               /* S = ความละเอียด 2 เท่า ให้ภาพคม */
+    var cv = document.createElement('canvas');
+    cv.width = W * S; cv.height = H * S;
+    var g = cv.getContext('2d');
+    g.scale(S, S);
+
+    var GOLD = '#C9AF79', SOFT = '#E7D6A8', DIM = 'rgba(237,231,218,.62)';
+    var F = function (w, sz) { return w + ' ' + sz + 'px Sarabun, sans-serif'; };
+
+    /* พื้นหลัง */
+    var bg = g.createLinearGradient(0, 0, W, H);
+    bg.addColorStop(0, '#071016'); bg.addColorStop(.5, '#0A1014'); bg.addColorStop(1, '#05090C');
+    g.fillStyle = bg; g.fillRect(0, 0, W, H);
+
+    /* กรอบทอง */
+    g.strokeStyle = 'rgba(201,175,121,.42)'; g.lineWidth = 2;
+    g.strokeRect(24, 24, W - 48, H - 48);
+
+    var y = 0;
+
+    function line(x1, x2, yy) {
+      g.strokeStyle = 'rgba(201,175,121,.20)'; g.lineWidth = 1;
+      g.beginPath(); g.moveTo(x1, yy); g.lineTo(x2, yy); g.stroke();
+    }
+    function row(label, value, yy) {
+      g.font = F(400, 20); g.fillStyle = DIM; g.textAlign = 'left';
+      g.fillText(label, 80, yy);
+      g.font = F(600, 21); g.fillStyle = '#EDE7DA'; g.textAlign = 'right';
+      g.fillText(value, W - 80, yy);
+      line(80, W - 80, yy + 20);
+    }
+
+    function draw(logo) {
+      if (logo) {
+        var lw = 190, lh = logo.height * (lw / logo.width);
+        g.drawImage(logo, (W - lw) / 2, 70, lw, lh);
+        y = 70 + lh + 44;
+      } else { y = 150; }
+
+      g.textAlign = 'center';
+      g.font = F(700, 34); g.fillStyle = '#FFFFFF';
+      g.fillText('FLASH BACK PRE-ORDER', W / 2, y); y += 34;
+      g.font = F(600, 17); g.fillStyle = GOLD;
+      g.fillText('ห ล ั ก ฐ า น ก า ร ล ง ท ะ เ บ ี ย น', W / 2, y); y += 56;
+
+      /* เลขอ้างอิง */
+      g.fillStyle = 'rgba(201,175,121,.09)';
+      g.strokeStyle = 'rgba(201,175,121,.38)'; g.lineWidth = 1.5;
+      g.beginPath(); g.roundRect(80, y, W - 160, 118, 14); g.fill(); g.stroke();
+      g.font = F(600, 16); g.fillStyle = DIM;
+      g.fillText('เลขอ้างอิง', W / 2, y + 38);
+      g.font = F(700, 42); g.fillStyle = SOFT;
+      g.fillText($('done-ref').textContent, W / 2, y + 90);
+      y += 178;
+
+      /* รายละเอียด */
+      row('Username (EXEID)', maskName($('done-user').textContent), y); y += 56;
+      row('AID',              $('done-aid').textContent,            y); y += 56;
+      row('Server',           $('done-server').textContent,         y); y += 56;
+      row('แพ็กเกจ',           $('done-tier').textContent,           y); y += 56;
+      row('Seed Point ทั้งหมด', $('done-seed').textContent,          y); y += 56;
+      row('เวลาที่ลงทะเบียน',    $('done-time').textContent,          y); y += 74;
+
+      /* กล่องเตือนสีแดง */
+      g.fillStyle = 'rgba(214,48,80,.17)';
+      g.strokeStyle = 'rgba(255,90,120,.62)'; g.lineWidth = 2;
+      g.beginPath(); g.roundRect(80, y, W - 160, 124, 14); g.fill(); g.stroke();
+      g.textAlign = 'center'; g.fillStyle = '#FFD9E0'; g.font = F(600, 20);
+      g.fillText('หากยอด Seed Point ไม่เพียงพอ', W / 2, y + 42);
+      g.fillText('จะถือว่าการ Pre-Order ถูกยกเลิกทันที', W / 2, y + 72);
+      g.fillText('ในวันที่ 18 กันยายน 12.00 น. เป็นต้นไป', W / 2, y + 102);
+      y += 168;
+
+      g.font = F(400, 17); g.fillStyle = 'rgba(237,231,218,.42)';
+      g.fillText('ระบบจะหัก Seed Point อัตโนมัติ วันที่ 18 กันยายน 2026 เวลา 12.00 น.', W / 2, y);
+      g.fillText('เอกสารนี้สร้างโดยระบบอัตโนมัติ · TOSM Extreme', W / 2, y + 28);
+
+      cv.toBlob(function (blob) {
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'TOSM-PreOrder-' + $('done-ref').textContent + '.png';
+        document.body.appendChild(a); a.click();
+        document.body.removeChild(a);
+        setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
+      }, 'image/png');
+    }
+
+    /* รอฟอนต์ไทยโหลดเสร็จก่อนวาด ไม่งั้นตัวหนังสือจะเพี้ยน */
+    var start = function () {
+      var img = new Image();
+      img.onload  = function () { draw(img); };
+      img.onerror = function () { draw(null); };
+      img.src = 'assets/logo.webp';
+    };
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(start).catch(start);
+    } else { start(); }
+  });
+
+  /* กด Enter ในหน้าตรวจสอบสิทธิ์ = กดปุ่ม */
+  ['f-user', 'f-aid'].forEach(function (id) {
+    $(id).addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); $('btn-check').click(); }
+    });
+  });
+
+  /* ปุ่ม "ลองใหม่อีกครั้ง" */
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest('[data-go]');
+    if (t) go(t.dataset.go);
+  });
+})();
+</script>
+</body>
+</html>
