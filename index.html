@@ -651,6 +651,7 @@ h1{
           <div><span>Username (EXEID)</span><b id="done-user">-</b></div>
           <div><span>AID</span><b id="done-aid">-</b></div>
           <div><span>Server</span><b id="done-server">-</b></div>
+          <div><span>Tier</span><b id="done-rank">-</b></div>
           <div><span>แพ็กเกจ</span><b id="done-tier">-</b></div>
           <div><span>Seed Point ทั้งหมด</span><b id="done-seed">-</b></div>
           <div><span>เวลาที่ลงทะเบียน</span><b id="done-time">-</b></div>
@@ -692,21 +693,22 @@ h1{
 
   /* ============================================================
      แพ็กเกจ 3 Tier — ระบบดึงจากชีต ผู้เล่นเลือกเองไม่ได้
-     ⚠️ ชื่อชุด Costume ด้านล่างยังเป็นตัวอย่าง รอทีมยืนยัน
-        แก้ค่า name ได้เลย ไม่ต้องแตะส่วนอื่น
+     Platinum = ยอดซื้อ ส.ค. 2,000 บาทขึ้นไป · Gold = 1,000–1,999 · Bronze = 1–999
+     เติม Seed Point: Platinum 10,000 · Gold 7,000 · Bronze 5,000 (1 บาท = 10 SP)
+     ⚠️ ชื่อชุด Costume ยังเป็นตัวอย่าง รอทีมยืนยัน
      ============================================================ */
   var TIERS = {
-    10000: { seed: '10,000 Seed Point', name: 'Fluffy Sky Puppy / Golden Fox — ชุดเต็ม' },
-    7000:  { seed: '7,000 Seed Point',  name: 'Fluffy Sky Puppy / Golden Fox — ชุดกลาง' },
-    5000:  { seed: '5,000 Seed Point',  name: 'Fluffy Sky Puppy / Golden Fox — ชุดเริ่มต้น' }
+    Platinum: { seed: '10,000 Seed Point', name: 'Fluffy Sky Puppy / Golden Fox — ชุดเต็ม' },
+    Gold:     { seed: '7,000 Seed Point',  name: 'Fluffy Sky Puppy / Golden Fox — ชุดกลาง' },
+    Bronze:   { seed: '5,000 Seed Point',  name: 'Fluffy Sky Puppy / Golden Fox — ชุดเริ่มต้น' }
   };
 
   var $ = function (id) { return document.getElementById(id); };
   var screens = ['check', 'fail', 'form', 'done'];
-  var session = { username: '', aid: '', tier: null };
+  var session = { username: '', aid: '', tier: null, tierName: null };
 
-  function tierInfo(v) {
-    return TIERS[Number(v)] || { seed: '-', name: '-' };
+  function tierInfo(name) {
+    return TIERS[name] || { seed: '-', name: '-' };
   }
 
   /* ปิดชื่อตรงกลาง เช่น PlayerName → Pla***ame */
@@ -802,12 +804,13 @@ h1{
     $('done-lead').textContent  = already
       ? 'ระบบพบว่าไอดีนี้ได้แจ้งรับสิทธิ์ Pre-Order ไปแล้ว ไม่ต้องลงทะเบียนซ้ำ'
       : 'ระบบบันทึกการรับสิทธิ์ Pre-Order ของท่านเรียบร้อยแล้ว';
-    var t = tierInfo(d.tier || session.tier);
+    var t = tierInfo(d.tier_name || session.tierName);
 
     $('done-ref').textContent    = d.ref_code || '-';
     $('done-user').textContent   = d.username || session.username || '-';
     $('done-aid').textContent    = d.aid || session.aid || '-';
     $('done-server').textContent = d.server || '-';
+    $('done-rank').textContent   = d.tier_name || session.tierName || '-';
     $('done-tier').textContent   = t.name;
     $('done-seed').textContent   = t.seed;
     $('done-need').textContent   = t.seed;
@@ -839,6 +842,7 @@ h1{
           session.username = user;
           session.aid = aid;
           session.tier = res.tier;
+          session.tierName = res.tier_name;
           $('g-aid').value = aid;          /* ดึง AID จากหน้าแรกมาใส่ให้เลย */
           markBad([]);
           showMsg($('form-msg'), '');
@@ -847,7 +851,8 @@ h1{
           session.username = user;
           session.aid = aid;
           session.tier = res.tier;
-          showDone({ ref_code: res.ref_code, tier: res.tier }, true);
+          session.tierName = res.tier_name;
+          showDone({ ref_code: res.ref_code, tier_name: res.tier_name }, true);
         } else {
           showFail(res.status);
         }
@@ -913,7 +918,7 @@ h1{
 
   /* ---------- 3. ดาวน์โหลดหลักฐานการลงทะเบียน ---------- */
   $('btn-slip').addEventListener('click', function () {
-    var W = 900, H = 1160, S = 2;               /* S = ความละเอียด 2 เท่า ให้ภาพคม */
+    var W = 900, H = 1216, S = 2;               /* S = ความละเอียด 2 เท่า ให้ภาพคม */
     var cv = document.createElement('canvas');
     cv.width = W * S; cv.height = H * S;
     var g = cv.getContext('2d');
@@ -972,6 +977,7 @@ h1{
       row('Username (EXEID)', maskName($('done-user').textContent), y); y += 56;
       row('AID',              $('done-aid').textContent,            y); y += 56;
       row('Server',           $('done-server').textContent,         y); y += 56;
+      row('Tier',              $('done-rank').textContent,           y); y += 56;
       row('แพ็กเกจ',           $('done-tier').textContent,           y); y += 56;
       row('Seed Point ทั้งหมด', $('done-seed').textContent,          y); y += 56;
       row('เวลาที่ลงทะเบียน',    $('done-time').textContent,          y); y += 74;
