@@ -693,14 +693,17 @@ h1{
 
   /* ============================================================
      แพ็กเกจ 3 Tier — ระบบดึงจากชีต ผู้เล่นเลือกเองไม่ได้
-     Platinum = ยอดซื้อ ส.ค. 2,000 บาทขึ้นไป · Gold = 1,000–1,999 · Bronze = 1–999
-     เติม Seed Point: Platinum 10,000 · Gold 7,000 · Bronze 5,000 (1 บาท = 10 SP)
-     ⚠️ ชื่อชุด Costume ยังเป็นตัวอย่าง รอทีมยืนยัน
+     ของรางวัลเหมือนกันทุก Tier — Tier เป็นส่วนลด ยิ่งซื้อเยอะยิ่งจ่ายถูก
+     Platinum  ซื้อ ส.ค. 2,000+   จ่าย   500 บาท =  5,000 SP  (ลด 50%)
+     Gold      ซื้อ 1,000–1,999   จ่าย   700 บาท =  7,000 SP  (ลด 30%)
+     Bronze    ซื้อ 1–999         จ่าย 1,000 บาท = 10,000 SP  (ราคาเต็ม)
+     อัตรา 1 บาท = 10 Seed Point
      ============================================================ */
+  var REWARD = 'Fluffy Sky Puppy / Golden Fox';
   var TIERS = {
-    Platinum: { seed: '10,000 Seed Point', name: 'Fluffy Sky Puppy / Golden Fox — ชุดเต็ม' },
-    Gold:     { seed: '7,000 Seed Point',  name: 'Fluffy Sky Puppy / Golden Fox — ชุดกลาง' },
-    Bronze:   { seed: '5,000 Seed Point',  name: 'Fluffy Sky Puppy / Golden Fox — ชุดเริ่มต้น' }
+    Platinum: { seed: '5,000 Seed Point',  baht: '500 บาท',   off: 'ส่วนลด 50%' },
+    Gold:     { seed: '7,000 Seed Point',  baht: '700 บาท',   off: 'ส่วนลด 30%' },
+    Bronze:   { seed: '10,000 Seed Point', baht: '1,000 บาท', off: 'ราคาเต็ม'  }
   };
 
   var $ = function (id) { return document.getElementById(id); };
@@ -708,7 +711,7 @@ h1{
   var session = { username: '', aid: '', tier: null, tierName: null };
 
   function tierInfo(name) {
-    return TIERS[name] || { seed: '-', name: '-' };
+    return TIERS[name] || { seed: '-', baht: '-', off: '' };
   }
 
   /* ปิดชื่อตรงกลาง เช่น PlayerName → Pla***ame */
@@ -810,9 +813,10 @@ h1{
     $('done-user').textContent   = d.username || session.username || '-';
     $('done-aid').textContent    = d.aid || session.aid || '-';
     $('done-server').textContent = d.server || '-';
-    $('done-rank').textContent   = d.tier_name || session.tierName || '-';
-    $('done-tier').textContent   = t.name;
-    $('done-seed').textContent   = t.seed;
+    var rank = d.tier_name || session.tierName || '-';
+    $('done-rank').textContent   = t.off ? rank + ' · ' + t.off : rank;
+    $('done-tier').textContent   = REWARD;
+    $('done-seed').textContent   = t.seed + ' (' + t.baht + ')';
     $('done-need').textContent   = t.seed;
     $('done-time').textContent   = d.created_at || '-';
     go('done');
