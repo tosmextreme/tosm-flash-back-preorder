@@ -802,7 +802,7 @@ h1{
           <div><span>Server</span><b id="done-server">-</b></div>
           <div><span>Tier</span><b id="done-rank">-</b></div>
           <div><span>แพ็กเกจ</span><b id="done-tier">-</b></div>
-          <div><span>Seed Point ทั้งหมด</span><b id="done-seed">-</b></div>
+          <div><span>Seed Point ที่ต้องใช้จ่าย</span><b id="done-seed">-</b></div>
           <div><span>เวลาที่ลงทะเบียน</span><b id="done-time">-</b></div>
         </div>
 
@@ -964,7 +964,7 @@ h1{
     $('done-aid').textContent    = d.aid || session.aid || '-';
     $('done-server').textContent = d.server || '-';
     var rank = d.tier_name || session.tierName || '-';
-    $('done-rank').textContent   = t.off ? rank + ' · ' + t.off : rank;
+    $('done-rank').textContent   = rank;
     $('done-tier').textContent   = REWARD;
     $('done-seed').textContent   = t.seed + ' (' + t.baht + ')';
     $('done-need').textContent   = t.seed;
@@ -1133,7 +1133,7 @@ h1{
       row('Server',           $('done-server').textContent,         y); y += 56;
       row('Tier',              $('done-rank').textContent,           y); y += 56;
       row('แพ็กเกจ',           $('done-tier').textContent,           y); y += 56;
-      row('Seed Point ทั้งหมด', $('done-seed').textContent,          y); y += 56;
+      row('Seed Point ที่ต้องใช้จ่าย', $('done-seed').textContent,   y); y += 56;
       row('เวลาที่ลงทะเบียน',    $('done-time').textContent,          y); y += 74;
 
       /* กล่องเตือนสีแดง */
