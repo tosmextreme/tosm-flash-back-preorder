@@ -336,6 +336,12 @@ h1{
   word-break:break-word;
 }
 .ev-item b{display:block;color:var(--gold-soft);font-size:11px;margin-top:2px}
+.ev-cond{
+  margin:0;
+  font-size:13px;line-height:1.8;
+  color:var(--txt-dim);
+}
+.ev-cond b{color:var(--gold-soft);font-weight:700}
 
 /* ตารางราคา */
 .ev-rate{width:100%;border-collapse:collapse;font-size:12.5px}
@@ -497,6 +503,16 @@ h1{
   border:1px solid rgba(226,96,122,.32);
   box-shadow:0 0 34px -8px rgba(226,96,122,.45);
 }
+.state-icon.soft{
+  color:var(--gold-soft);
+  background:rgba(201,175,121,.10);
+  border:1px solid var(--line-2);
+  box-shadow:0 0 34px -10px rgba(201,175,121,.5);
+  font-size:30px;
+}
+.foot a{color:var(--gold);text-decoration:none;border-bottom:1px dotted var(--gold-dark)}
+.foot a:hover{color:var(--gold-soft)}
+.callout b{color:var(--gold-soft)}
 .state-icon.good{
   color:var(--ok);
   background:rgba(95,200,160,.10);
@@ -662,13 +678,18 @@ h1{
         </table>
       </div>
 
-      <details class="ev-more">
-        <summary>รายละเอียดกิจกรรมทั้งหมด</summary>
-        <div class="body">
-          <b>ใครมีสิทธิ์</b><br>
-          ผู้ที่ซื้อแพ็ก TP &amp; Gold คุ้มทุกวัน I หรือ II รวมครบ 990 บาทขึ้นไป ในเดือนสิงหาคม 2026
+      <div class="ev">
+        <span class="ev-h">เงื่อนไขการ Pre-Order</span>
+        <p class="ev-cond">
+          ผู้เล่นได้ทำการซื้อแพ็ก TP &amp; Gold คุ้มทุกวัน I หรือ TP &amp; Gold คุ้มทุกวัน II
+          <b>รวมครบ 990 บาทขึ้นไป</b> ในเดือนสิงหาคม 2026
+        </p>
+      </div>
 
-          <p style="margin:13px 0 7px"><b>ขั้นตอนรับสิทธิ์</b></p>
+      <details class="ev-more">
+        <summary>ขั้นตอนรับสิทธิ์ และหมายเหตุ</summary>
+        <div class="body">
+          <p style="margin:0 0 7px"><b>ขั้นตอนรับสิทธิ์</b></p>
           <ol>
             <li>ตรวจสอบสิทธิ์และราคาแลกซื้อของท่านที่หน้านี้</li>
             <li>หากมีสิทธิ์ ให้ยืนยันตัวตนโดยกรอก Server, Family Name, Email และเบอร์โทร</li>
@@ -706,9 +727,9 @@ h1{
       <div class="steps"><b>ตรวจสอบสิทธิ์</b><s></s>ลงทะเบียน<s></s>ยืนยัน</div>
 
       <div class="state">
-        <div class="state-icon bad">✕</div>
-        <h1 id="fail-title">ไม่พบสิทธิ์ Pre-Order</h1>
-        <p class="lead" id="fail-lead">Username (EXEID) / AID ไม่ตรงตามที่ระบบตรวจเจอ</p>
+        <div class="state-icon soft">?</div>
+        <h1 id="fail-title">ยังไม่พบข้อมูลของท่าน</h1>
+        <p class="lead" id="fail-lead">ลองตรวจสอบ Username (EXEID) และ AID อีกครั้งนะครับ</p>
 
         <div class="callout" id="fail-tips">
           กรุณาตรวจสอบอีกครั้งว่า<br>
@@ -720,7 +741,10 @@ h1{
         <button class="btn" type="button" data-go="check">ลองใหม่อีกครั้ง</button>
       </div>
 
-      <p class="foot">หากตรวจสอบแล้วยังไม่พบสิทธิ์ กรุณาติดต่อทีมงานพร้อมแจ้ง AID ของท่าน</p>
+      <p class="foot">
+        ตรวจสอบแล้วยังไม่พบข้อมูล? แจ้ง AID ของท่านได้ที่
+        <a href="https://support.exe.in.th/index.php" target="_blank" rel="noopener noreferrer">ติดต่อทีมงาน</a>
+      </p>
     </div>
 
     <!-- ---------- 3. ลงทะเบียนรับสิทธิ์ ---------- -->
@@ -919,28 +943,32 @@ h1{
   /* ข้อความตามสถานะที่ฐานข้อมูลส่งกลับมา */
   var FAIL = {
     no_match: {
-      title: 'ไม่พบสิทธิ์ Pre-Order',
-      lead:  'Username (EXEID) / AID ไม่ตรงตามที่ระบบตรวจเจอ',
-      tips:  'กรุณาตรวจสอบอีกครั้งว่า<br>' +
-             '• สะกด Username และ AID ถูกต้องครบถ้วน<br>' +
-             '• ไม่มีช่องว่างหรืออักขระเกินติดมาตอนคัดลอก<br>' +
+      title: 'ยังไม่พบข้อมูลของท่าน',
+      lead:  'ลองตรวจสอบ Username (EXEID) และ AID อีกครั้งนะครับ',
+      tips:  '<b>เงื่อนไขการ Pre-Order</b><br>' +
+             'ผู้เล่นได้ทำการซื้อแพ็ก TP &amp; Gold คุ้มทุกวัน I หรือ ' +
+             'TP &amp; Gold คุ้มทุกวัน II <b>รวมครบ 990 บาทขึ้นไป</b> ' +
+             'ในเดือนสิงหาคม 2026<br><br>' +
+             'หากเข้าเงื่อนไขแล้ว ลองเช็กอีกนิดว่า<br>' +
+             '• สะกด Username และ AID ครบถ้วน<br>' +
+             '• ไม่มีช่องว่างติดมาตอนคัดลอก<br>' +
              '• เป็นไอดีเดียวกับที่ซื้อแพ็กในเดือนสิงหาคม'
     },
     rate_limited: {
-      title: 'ตรวจสอบบ่อยเกินไป',
-      lead:  'ระบบจำกัดจำนวนครั้งในการตรวจสอบ เพื่อความปลอดภัยของข้อมูลผู้เล่น',
-      tips:  'กรุณารอประมาณ 10 นาที แล้วลองใหม่อีกครั้ง'
+      title: 'ขอพักสักครู่นะครับ',
+      lead:  'ระบบจำกัดจำนวนครั้งในการตรวจสอบ เพื่อความปลอดภัยของข้อมูลผู้เล่นทุกท่าน',
+      tips:  'รบกวนรอประมาณ 10 นาที แล้วลองใหม่อีกครั้งได้เลยครับ'
     },
     closed: {
       title: 'ยังไม่เปิดให้ลงทะเบียน',
       lead:  'ระบบเปิดรับ Pre-Order ระหว่างวันที่ '
              + '30 กันยายน – 8 ตุลาคม 2026',
-      tips:  'กรุณากลับมาใหม่ในช่วงเวลาดังกล่าว'
+      tips:  'ไว้เจอกันในช่วงเวลาดังกล่าวนะครับ'
     },
     error: {
       title: 'ระบบขัดข้องชั่วคราว',
-      lead:  'ไม่สามารถเชื่อมต่อกับระบบได้ในขณะนี้',
-      tips:  'กรุณาลองใหม่อีกครั้งในอีกสักครู่ หากยังไม่ได้กรุณาแจ้งทีมงาน'
+      lead:  'ตอนนี้เชื่อมต่อกับระบบไม่ได้ ไม่ได้เกิดจากฝั่งท่านครับ',
+      tips:  'รบกวนลองใหม่อีกสักครู่ หากยังไม่ได้ แจ้งทีมงานได้เลย'
     }
   };
 
