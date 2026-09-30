@@ -1,22 +1,20 @@
-# บล็อกทุกอย่างก่อน แล้วปลดล็อกเฉพาะไฟล์ที่ตั้งใจให้เป็นสาธารณะ
-# ไฟล์ใหม่ที่ไม่ได้เขียนอนุญาตไว้ = ขึ้น Git ไม่ได้โดยอัตโนมัติ
+# Deny-first allowlist: block everything, then allow only public files.
+
 *
 !*/
+
 !.gitignore
 !README.md
 !index.html
 !assets/bg.webp
 !assets/logo.webp
 
-# กันไว้อีกชั้น เผื่อมีคนเผลอแก้ข้างบน
 *.sql
 *.gs
-SETUP.md
-Build-Plan.md
+*.md
+!README.md
 .env
 .env.*
-*secret*
-*SECRET*
 *.key
 *.pem
 credentials*
