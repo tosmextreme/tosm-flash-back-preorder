@@ -191,17 +191,6 @@ body::after{
   position:absolute; top:0; left:0; right:0; height:1px;
   background:linear-gradient(90deg,transparent,var(--line-2),transparent);
 }
-.close{
-  position:absolute; top:20px; right:20px;
-  width:34px;height:34px;
-  display:grid;place-items:center;
-  border:0;border-radius:10px;
-  background:transparent;color:var(--txt-dim);
-  font-size:19px;cursor:pointer;
-  transition:.18s;
-}
-.close:hover{background:rgba(255,255,255,.07);color:var(--txt)}
-
 /* หัวข้อ + ขั้นตอน */
 .steps{
   display:flex;align-items:center;gap:9px;
@@ -707,10 +696,6 @@ h1{
 .ev-more summary{transition:border-color .16s, background .16s, transform .16s}
 .ev-more summary:active{transform:scale(.995)}
 
-/* ปุ่มปิด — หมุนเล็กน้อยตอนชี้ */
-.close{transition:background .18s, color .18s, transform .22s}
-.close:hover{transform:rotate(90deg)}
-
 /* ไอคอนสถานะหน้าสำเร็จ/ไม่ผ่าน — เด้งเข้ามา */
 .state-icon{animation:pop .55s cubic-bezier(.22,1.5,.4,1) both;animation-delay:.1s}
 @keyframes pop{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:scale(1)}}
@@ -779,7 +764,6 @@ h1{
 
   <!-- ================= ฝั่งขวา: แผงกระจก ================= -->
   <section class="panel">
-    <button class="close" type="button" aria-label="ปิด">✕</button>
 
     <!-- ---------- 1. ตรวจสอบสิทธิ์ ---------- -->
     <div class="screen on" id="s-check">
